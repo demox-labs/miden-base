@@ -79,7 +79,7 @@ impl TransactionKernel {
             .expect("failed to load miden-lib")
             .with_library(&StdLibrary::default())
             .expect("failed to load std-lib")
-            .with_kernel(Self::kernel())
+            .with_kernel(Self::kernel()) // error here
             .expect("kernel must be well formed")
     }
 

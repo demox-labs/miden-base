@@ -32,6 +32,7 @@ testing = ["miden-objects/testing"]
 [dependencies]
 miden-objects = { package = "miden-objects", path = "../objects", version = "0.2", default-features = false }
 miden-stdlib = { workspace = true }
+web-sys = { version = "0.3", features = ["console"] }
 
 [dev-dependencies]
 miden-objects = { package = "miden-objects", path = "../objects", version = "0.2", default-features = false, features = [

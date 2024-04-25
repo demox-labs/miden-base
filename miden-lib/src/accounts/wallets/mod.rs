@@ -32,15 +32,19 @@ pub fn create_basic_wallet(
     account_type: AccountType,
     account_storage_type: AccountStorageType,
 ) -> Result<(Account, Word), AccountError> {
+    web_sys::console::log_1(&"lib 1".into());
     if matches!(account_type, AccountType::FungibleFaucet | AccountType::NonFungibleFaucet) {
         return Err(AccountError::AccountIdInvalidFieldElement(
             "Basic wallet accounts cannot have a faucet account type".to_string(),
         ));
     }
+    web_sys::console::log_1(&"lib 2".into());
 
     let (auth_scheme_procedure, storage_slot_0_data): (&str, Word) = match auth_scheme {
         AuthScheme::RpoFalcon512 { pub_key } => ("basic::auth_tx_rpo_falcon512", pub_key.into()),
     };
+
+    web_sys::console::log_1(&"lib 3".into());
 
     let account_code_string: String = format!(
         "
@@ -54,17 +58,22 @@ pub fn create_basic_wallet(
     "
     );
     let account_code_src: &str = &account_code_string;
+    web_sys::console::log_1(&"lib 4".into());
 
     let account_code_ast = ModuleAst::parse(account_code_src)
         .map_err(|e| AccountError::AccountCodeAssemblerError(e.into()))?;
+    web_sys::console::log_1(&"lib 41".into());
     let account_assembler = TransactionKernel::assembler();
+    web_sys::console::log_1(&"lib 42".into());
     let account_code = AccountCode::new(account_code_ast.clone(), &account_assembler)?;
+    web_sys::console::log_1(&"lib 5".into());
 
     let account_storage = AccountStorage::new(vec![miden_objects::accounts::SlotItem {
         index: 0,
         slot: StorageSlot::new_value(storage_slot_0_data),
     }])?;
     let account_vault = AssetVault::new(&[]).expect("error on empty vault");
+    web_sys::console::log_1(&"lib 6".into());
 
     let account_seed = AccountId::get_account_seed(
         init_seed,
@@ -73,7 +82,9 @@ pub fn create_basic_wallet(
         account_code.root(),
         account_storage.root(),
     )?;
+    web_sys::console::log_1(&"lib 7".into());
     let account_id = AccountId::new(account_seed, account_code.root(), account_storage.root())?;
+    web_sys::console::log_1(&"lib 8".into());
     Ok((
         Account::new(account_id, account_vault, account_storage, account_code, ZERO),
         account_seed,
